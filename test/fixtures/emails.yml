@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  group: one
+  subject: MyString
+  body: MyText
+  from_address: MyString
+  received_at: 2025-06-18 13:46:51
+
+two:
+  group: two
+  subject: MyString
+  body: MyText
+  from_address: MyString
+  received_at: 2025-06-18 13:46:51
