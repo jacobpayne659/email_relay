@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_18_182805) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_18_193120) do
+  create_table "email_group_memberships", force: :cascade do |t|
+    t.integer "email_group_id", null: false
+    t.integer "member_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email_group_id"], name: "index_email_group_memberships_on_email_group_id"
+    t.index ["member_id"], name: "index_email_group_memberships_on_member_id"
+  end
+
   create_table "email_groups", force: :cascade do |t|
     t.string "name"
     t.string "group_email"
@@ -30,22 +39,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_18_182805) do
     t.index ["email_group_id"], name: "index_emails_on_email_group_id"
   end
 
-  create_table "group_members", force: :cascade do |t|
-    t.integer "email_group_id", null: false
-    t.integer "member_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["email_group_id"], name: "index_group_members_on_email_group_id"
-    t.index ["member_id"], name: "index_group_members_on_member_id"
-  end
-
-  create_table "members", force: :cascade do |t|
+  create_table "users", force: :cascade do |t|
     t.string "email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "email_group_memberships", "email_groups"
+  add_foreign_key "email_group_memberships", "members"
   add_foreign_key "emails", "email_groups"
-  add_foreign_key "group_members", "email_groups"
-  add_foreign_key "group_members", "members"
 end
