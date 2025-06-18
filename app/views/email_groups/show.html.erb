@@ -1,6 +1,32 @@
 <p style="color: green"><%= notice %></p>
 
 <%= render @email_group %>
+<h2>Members</h2>
+<ul>
+  <% @email_group.users.each do |user| %>
+    <li>
+      <%= user.email %>
+      <%= button_to 'Remove', email_group_email_group_membership_path(@email_group, user), method: :delete, data: { confirm: "Remove this member?" } %>
+    </li>
+  <% end %>
+</ul>
+
+<h3>Add Existing Member</h3>
+<%= form_with url: email_group_email_group_memberships_path(@email_group), method: :post do |form| %>
+  <%= select_tag :user_id, options_from_collection_for_select(User.all, :id, :name) %>
+  <%= form.submit "Add" %>
+<% end %>
+
+<h3>Or Add New Member</h3>
+<%= form_with url: email_group_email_group_memberships_path(@email_group), method: :post do |form| %>
+  <%= form.label :new_user_name, "Name" %>
+  <%= form.text_field :new_user_name %>
+
+  <%= form.label :new_user_email, "Email" %>
+  <%= form.email_field :new_user_email %>
+
+  <%= form.submit "Add New Member" %>
+<% end %>
 
 <div>
   <%= link_to "Edit this email group", edit_email_group_path(@email_group) %> |

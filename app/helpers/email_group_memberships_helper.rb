@@ -1,0 +1,2 @@
+module EmailGroupMembershipsHelper
+end
