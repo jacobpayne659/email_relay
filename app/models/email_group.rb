@@ -1,0 +1,2 @@
+class EmailGroup < ApplicationRecord
+end

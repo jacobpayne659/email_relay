@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Email groups" %>
+
+<h1>Email groups</h1>
+
+<div id="email_groups">
+  <% @email_groups.each do |email_group| %>
+    <%= render email_group %>
+    <p>
+      <%= link_to "Show this email group", email_group %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New email group", new_email_group_path %>

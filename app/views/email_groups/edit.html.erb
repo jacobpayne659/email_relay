@@ -1,0 +1,12 @@
+<% content_for :title, "Editing email group" %>
+
+<h1>Editing email group</h1>
+
+<%= render "form", email_group: @email_group %>
+
+<br>
+
+<div>
+  <%= link_to "Show this email group", @email_group %> |
+  <%= link_to "Back to email groups", email_groups_path %>
+</div>

@@ -1,0 +1,27 @@
+<%= form_with(model: email_group) do |form| %>
+  <% if email_group.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(email_group.errors.count, "error") %> prohibited this email_group from being saved:</h2>
+
+      <ul>
+        <% email_group.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :name, style: "display: block" %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div>
+    <%= form.label :group_email, style: "display: block" %>
+    <%= form.text_field :group_email %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
