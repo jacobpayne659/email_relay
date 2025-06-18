@@ -10,14 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_18_193120) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_18_194517) do
   create_table "email_group_memberships", force: :cascade do |t|
     t.integer "email_group_id", null: false
-    t.integer "member_id", null: false
+    t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["email_group_id", "user_id"], name: "index_email_group_memberships_on_email_group_id_and_user_id", unique: true
     t.index ["email_group_id"], name: "index_email_group_memberships_on_email_group_id"
-    t.index ["member_id"], name: "index_email_group_memberships_on_member_id"
+    t.index ["user_id"], name: "index_email_group_memberships_on_user_id"
   end
 
   create_table "email_groups", force: :cascade do |t|
@@ -46,6 +47,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_18_193120) do
   end
 
   add_foreign_key "email_group_memberships", "email_groups"
-  add_foreign_key "email_group_memberships", "members"
+  add_foreign_key "email_group_memberships", "users"
   add_foreign_key "emails", "email_groups"
 end
