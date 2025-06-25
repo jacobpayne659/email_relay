@@ -1,17 +1,4 @@
-<div id="<%= dom_id email_group %>">
-  <p>
-    <strong>Name:</strong>
-    <%= email_group.name %>
-  </p>
-
-  <p>
-    <strong>Group email:</strong>
-    <%= email_group.group_email %>
-  </p>
-
-  <p>
-    <strong>Message count:</strong>
-    <%= email_group.message_count %>
-  </p>
-
-</div>
+<tr id="<%= dom_id email_group %>">
+  <td><%= link_to email_group.name, email_group %></td>
+  <td><%= email_group.group_email %></td>
+</tr>

@@ -2,15 +2,76 @@
 
 <% content_for :title, "Email groups" %>
 
-<h1>Email groups</h1>
-
-<div id="email_groups">
-  <% @email_groups.each do |email_group| %>
-    <%= render email_group %>
-    <p>
-      <%= link_to "Show this email group", email_group %>
-    </p>
-  <% end %>
+<div class="email-groups-header">
+  <h1>Email groups</h1>
+  <%= link_to "➕ New", new_email_group_path, class: "new-email-group-button" %>
 </div>
 
-<%= link_to "New email group", new_email_group_path %>
+<table class="email-groups-table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Group Email</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @email_groups.each do |email_group| %>
+      <tr>
+        <td>
+          <%= link_to email_group.name, email_group, class: "email-group-name-link" %>
+        </td>
+        <td>
+          <%= email_group.group_email %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+<style>
+  .email-groups-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .new-email-group-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+
+  .email-groups-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+  }
+
+  .email-groups-table th,
+  .email-groups-table td {
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+
+  .email-groups-table th {
+    background-color: #f5f5f5;
+  }
+
+  .email-group-name-link {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .email-group-name-link:hover {
+    text-decoration: underline;
+  }
+</style>
