@@ -1,5 +1,5 @@
 class Email < ApplicationRecord
   belongs_to :email_group
 
-  validates :subject, :body, :from_address, :received_at, presence: true
+  validates :subject, :body, presence: true
 end
