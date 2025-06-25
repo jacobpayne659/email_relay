@@ -1,37 +1,189 @@
 <p style="color: green"><%= notice %></p>
 
-<%= render @email_group %>
 <h2>Members</h2>
-<ul>
-  <% @email_group.users.each do |user| %>
-    <li>
-      <%= user.email %>
-      <%= button_to 'Remove', email_group_email_group_membership_path(@email_group, user), method: :delete, data: { confirm: "Remove this member?" } %>
-    </li>
-  <% end %>
-</ul>
-
-<h3>Add Existing Member</h3>
-<%= form_with url: email_group_email_group_memberships_path(@email_group), method: :post do |form| %>
-  <%= select_tag :user_id, options_from_collection_for_select(User.all, :id, :name) %>
-  <%= form.submit "Add" %>
-<% end %>
-
-<h3>Or Add New Member</h3>
-<%= form_with url: email_group_email_group_memberships_path(@email_group), method: :post do |form| %>
-  <%= form.label :new_user_name, "Name" %>
-  <%= form.text_field :new_user_name %>
-
-  <%= form.label :new_user_email, "Email" %>
-  <%= form.email_field :new_user_email %>
-
-  <%= form.submit "Add New Member" %>
-<% end %>
-
-<div>
-  <br>
-  <%= link_to "Edit this email group", edit_email_group_path(@email_group) %> |
-  <%= link_to "Back to email groups", email_groups_path %>
-  <br>
-  <%= button_to "Destroy this email group", @email_group, method: :delete %>
+<div class="member-header">
+  <button id="openModal" class="new-email-group-button">Add Member</button>
 </div>
+<table class="email-groups-table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @email_group.users.each do |user| %>
+      <tr>
+        <td><%= user.name %></td>
+        <td><%= user.email %></td>
+        <td>
+          <%= button_to 'Remove', email_group_email_group_membership_path(@email_group, user),
+              method: :delete,
+              data: { confirm: "Remove this member?" } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div id="memberModal" class="modal">
+  <div class="modal-content">
+    <span id="closeModal" class="close">&times;</span>
+    <h3>Add Existing Member</h3>
+    <%= form_with url: email_group_email_group_memberships_path(@email_group), method: :post, local: true do |form| %>
+      <%= select_tag :user_id, options_from_collection_for_select(User.all, :id, :name), class: "form-select" %>
+      <%= form.submit "Add", class: "new-email-group-button" %>
+    <% end %>
+
+    <hr>
+
+    <h3>Or Add New Member</h3>
+    <%= form_with url: email_group_email_group_memberships_path(@email_group), method: :post, local: true do |form| %>
+      <div>
+        <%= form.label :new_user_name, "Name" %><br>
+        <%= form.text_field :new_user_name %>
+      </div>
+      <div>
+        <%= form.label :new_user_email, "Email" %><br>
+        <%= form.email_field :new_user_email %>
+      </div>
+      <div>
+        <%= form.submit "Add New Member", class: "new-email-group-button" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="email-group-actions">
+  <%= link_to "Edit", edit_email_group_path(@email_group), class: "action-button edit" %>
+  <%= link_to "Back", email_groups_path, class: "action-button back" %>
+  <%= button_to "Delete", @email_group, method: :delete, data: { confirm: "Are you sure?" }, class: "action-button destroy" %>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const modal = document.getElementById("memberModal");
+    const openBtn = document.getElementById("openModal");
+    const closeBtn = document.getElementById("closeModal");
+
+    openBtn.onclick = () => modal.style.display = "block";
+    closeBtn.onclick = () => modal.style.display = "none";
+    window.onclick = (event) => {
+      if (event.target === modal) modal.style.display = "none";
+    };
+  });
+</script>
+
+<style>
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+  }
+
+  .modal-content {
+    background-color: white;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 12px;
+    width: 50%;
+    max-width: 600px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+
+  .close {
+    float: right;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .email-groups-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .member-header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+  }
+
+  .new-email-group-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+
+  .email-groups-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+  }
+
+  .email-groups-table th,
+  .email-groups-table td {
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+
+  .email-groups-table th {
+    background-color: #f5f5f5;
+  }
+
+  .email-group-name-link {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .email-group-name-link:hover {
+    text-decoration: underline;
+  }
+
+  .email-group-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+
+.action-button {
+  padding: 0.5rem 1rem;
+  border: none;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.action-button.edit {
+  background-color: #3498db;
+  color: white;
+}
+
+.action-button.back {
+  background-color: #95a5a6;
+  color: white;
+}
+
+.action-button.destroy {
+  background-color: #e74c3c;
+  color: white;
+}
+</style>
