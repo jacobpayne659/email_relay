@@ -1,9 +1,15 @@
 <p style="color: green"><%= notice %></p>
+<h1><%= @email_group.name %></h1>
+<h3><%= @email_group.group_email %></h3>
 
-<h2>Members</h2>
-<div class="member-header">
-  <button id="openModal" class="new-email-group-button">Add Member</button>
+<div class="email-group-actions">
+  <%= link_to "Edit", edit_email_group_path(@email_group), class: "action-button edit" %>
+  <%= link_to "Back", email_groups_path, class: "action-button back" %>
+  <%= button_to "Delete", @email_group, method: :delete, data: { confirm: "Are you sure?" }, class: "action-button destroy" %>
+  <button id="openModal" class="action-button new-email-group-button">Add Member</button>
 </div>
+<br>
+<h2>Members</h2>
 <table class="email-groups-table">
   <thead>
     <tr>
@@ -55,11 +61,16 @@
   </div>
 </div>
 
-<div class="email-group-actions">
-  <%= link_to "Edit", edit_email_group_path(@email_group), class: "action-button edit" %>
-  <%= link_to "Back", email_groups_path, class: "action-button back" %>
-  <%= button_to "Delete", @email_group, method: :delete, data: { confirm: "Are you sure?" }, class: "action-button destroy" %>
-</div>
+<h2>Emails</h2>
+<ul>
+  <% @email_group.emails.order(created_at: :desc).each do |email| %>
+    <li>
+      <strong><%= email.subject %></strong><br>
+      <%= simple_format(email.body) %>
+    </li>
+  <% end %>
+</ul>
+
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
@@ -112,12 +123,6 @@
     margin-bottom: 1rem;
   }
 
-  .member-header {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 1rem;
-  }
-
   .new-email-group-button {
     background-color: #4CAF50;
     color: white;
@@ -125,7 +130,6 @@
     padding: 0.5rem 1rem;
     border-radius: 5px;
     text-decoration: none;
-    font-size: 1rem;
     cursor: pointer;
   }
 
