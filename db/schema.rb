@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_18_204811) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_26_155012) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -74,6 +74,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_18_204811) do
     t.datetime "received_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "from"
+    t.datetime "deleted_at"
     t.index ["email_group_id"], name: "index_emails_on_email_group_id"
   end
 

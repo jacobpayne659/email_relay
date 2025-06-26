@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   resources :users
+  resources :emails, only: [:destroy]
   root to: "email_groups#index"
 
   resources :email_groups do

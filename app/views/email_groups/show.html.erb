@@ -61,15 +61,32 @@
   </div>
 </div>
 
-<h2>Emails</h2>
-<ul>
-  <% @email_group.emails.order(created_at: :desc).each do |email| %>
-    <li>
-      <strong><%= email.subject %></strong><br>
-      <%= simple_format(email.body) %>
-    </li>
-  <% end %>
-</ul>
+<h2>Inbox</h2>
+
+<table class="email-groups-table">
+  <thead>
+    <tr>
+      <th>From</th>
+      <th>Subject</th>
+      <th>Body</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @email_group.emails.active.each do |email| %>
+      <tr>
+        <td><%= email.from %></td>
+        <td><%= email.subject %></td>
+        <td><%= simple_format(email.body) %></td>
+        <td>
+          <%= button_to email_path(email), method: :delete, data: { confirm: "Are you sure?" }, class: "delete-button" do %>
+            🗑️
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
 
 
 <script>
