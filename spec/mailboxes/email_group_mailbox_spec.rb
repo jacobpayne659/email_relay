@@ -5,8 +5,9 @@ RSpec.describe EmailGroupMailbox do
   let(:mail) do
     Mail.new(
       to: group_email,
+      from: "sender@example.com",
       subject: "Hello Group",
-      body: "This is a test email",
+      body: "This is a test email"
     )
   end
 
@@ -27,6 +28,22 @@ RSpec.describe EmailGroupMailbox do
         expect(email.subject).to eq(mail.subject)
         expect(email.body).to eq(mail.decoded)
         expect(email.email_group).to eq(email_group)
+      end
+
+      it "forwards the email to each user in the group" do
+        email_group.users << [user1, user2]
+        ActionMailer::Base.deliveries.clear
+
+        subject
+
+        expect(ActionMailer::Base.deliveries.size).to eq(2)
+
+        recipients = ActionMailer::Base.deliveries.map(&:to).flatten
+        expect(recipients).to include("user1@email.com", "user2@email.com")
+
+        delivered_email = ActionMailer::Base.deliveries.first
+        expect(delivered_email.subject).to eq("Hello Group")
+        expect(delivered_email.body.encoded).to include("This is a test email")
       end
     end
 

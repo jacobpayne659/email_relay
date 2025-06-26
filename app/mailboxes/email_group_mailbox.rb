@@ -7,18 +7,21 @@ class EmailGroupMailbox < ApplicationMailbox
     end
 
     email_group = EmailGroup.find_by(group_email: group_email)
-
-    if email_group.present?
-      Email.create!(
-        subject: mail.subject,
-        body: mail.decoded,
-        email_group: email_group,
-        from: mail.from&.first || "<unknown>",
-      )
+    unless email_group
+      Rails.logger.warn "No EmailGroup found for #{group_email}"
+      return
     end
 
-  rescue => e
-    Rails.logger.error "EmailGroupMailbox error: #{e.class} - #{e.message}"
-    raise e
+    email = Email.create!(
+      subject: mail.subject,
+      body: mail.decoded,
+      email_group: email_group,
+      from: mail.from&.first || "<unknown>",
+    )
+
+    email_group.users.find_each do |user|
+      # binding.pry
+      GroupMailer.with(user: user, email: email).relay_email.deliver_now
+    end
   end
 end

@@ -1,10 +1,14 @@
 class GroupMailer < ApplicationMailer
-  def forward_email(user, original_mail)
+  def relay_email
+    @user = params[:user]
+    @email = params[:email]
+
     mail(
-      to: user.email,
-      from: original_mail.from&.first || "default@email.com",
-      subject: original_mail.subject,
-      body: original_mail.body.decoded
-    )
+      to: @user.email,
+      from: @email.from,
+      subject: @email.subject
+    ) do |format|
+      format.text { render plain: @email.body }
+    end
   end
 end
