@@ -6,19 +6,16 @@ class EmailGroupMailbox < ApplicationMailbox
       return
     end
 
-    email_group = EmailGroup.find_by('LOWER(group_email) = ?', group_email)
+    email_group = EmailGroup.find_by(group_email: group_email)
 
-    unless email_group
-      Rails.logger.warn "EmailGroupMailbox: No EmailGroup found for #{group_email}"
-      return
+    if email_group.present?
+      Email.create!(
+        subject: mail.subject,
+        body: mail.decoded,
+        email_group: email_group,
+        from: mail.from&.first || "<unknown>",
+      )
     end
-
-    Email.create!(
-      subject: mail.subject,
-      body: mail.decoded,
-      email_group: email_group,
-      from: mail.from&.first || "<unknown>",
-    )
 
   rescue => e
     Rails.logger.error "EmailGroupMailbox error: #{e.class} - #{e.message}"
