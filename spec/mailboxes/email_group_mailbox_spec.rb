@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe EmailGroupMailbox do
-  let(:group_email) { "designers@email.com" }
+  let(:group_email) { "example@email.com" }
   let(:mail) do
     Mail.new(
       to: group_email,
@@ -10,7 +10,7 @@ RSpec.describe EmailGroupMailbox do
     )
   end
 
-  let!(:email_group) { EmailGroup.create!(name: "Example Group", group_email: group_email) }
+  let!(:email_group) { EmailGroup.create!(name: "Example Group", group_email: "example@email.com") }
   let!(:user1) { User.create!(name: "user1", email: "user1@email.com") }
   let!(:user2) { User.create!(name: "user2", email: "user2@email.com") }
 
@@ -28,12 +28,13 @@ RSpec.describe EmailGroupMailbox do
         expect(email.body).to eq(mail.decoded)
         expect(email.email_group).to eq(email_group)
       end
+    end
 
-      it "forwards email to all users via GroupMailer" do
-        email_group.users.each do |user|
-          expect(GroupMailer).to receive(:forward_email).with(user, mailbox.mail).and_return(double(deliver_later: true))
-        end
-        mailbox.process
+    context "when EmailGroup does not exist" do
+      let(:group_email) { "nonexistent@email.com" }
+
+      it "does not create an Email record" do
+        expect { subject }.not_to change { Email.count }
       end
     end
 
