@@ -1,9 +1,0 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  email_group: one
-  user: one
-
-two:
-  email_group: two
-  user: two
