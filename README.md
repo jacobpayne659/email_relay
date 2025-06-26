@@ -47,6 +47,7 @@ bin/rails server
 
 - visit http://localhost:3000/rails/conductor/action_mailbox/inbound_emails/new to send an email to the group
 - ActionMailbox will say "delivered" but the app will only send the emails to existing email groups
+- The email is then forwarded to each member of the group
 
 ### 3. View the email
 
