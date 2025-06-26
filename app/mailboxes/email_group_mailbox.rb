@@ -16,7 +16,8 @@ class EmailGroupMailbox < ApplicationMailbox
     Email.create!(
       subject: mail.subject,
       body: mail.decoded,
-      email_group: email_group
+      email_group: email_group,
+      from: mail.from&.first || "<unknown>",
     )
 
   rescue => e
