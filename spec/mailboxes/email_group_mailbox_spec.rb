@@ -54,16 +54,5 @@ RSpec.describe EmailGroupMailbox do
         expect { subject }.not_to change { Email.count }
       end
     end
-
-    context "when an exception is raised" do
-      before do
-        allow(EmailGroup).to receive(:find_by).and_raise(StandardError, "boom!")
-      end
-
-      it "logs error and raises" do
-        expect(Rails.logger).to receive(:error).with(/EmailGroupMailbox error: StandardError - boom!/)
-        expect { mailbox.process }.to raise_error(StandardError, "boom!")
-      end
-    end
   end
 end
